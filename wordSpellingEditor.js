@@ -3,7 +3,7 @@
 let givenAns = "Welcome home!";
 let userAns = "Wecome home!";
 
-const levCalc = (givenAns, userAns) => {
+export const levCalc = (givenAns, userAns) => {
 	if (typeof givenAns != "string") return "please provide string.";
     else if (givenAns == userAns) return "match";
     else {

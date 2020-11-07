@@ -3,10 +3,9 @@
 let phrase1 = ["I", "am", "what", "I", "am", "and", "that's", "what", "I", "am", "I"];
 let phrase2 = ["this", "is", "the", "craziest", "thing"];
 
-//for this to work properly, for each nonmatching index you need to look ahead to where the matchin item is located in phrase 2, place it in the correct position, and delete it up ahead.
 
 
-const sentCorrector = (phrase1, phrase2) => {
+export const sentCorrector = (phrase1, phrase2) => {
   if (phrase1 == phrase2) return "correct";
   else {
     let editedPhrase = phrase2;

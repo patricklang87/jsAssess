@@ -5,7 +5,6 @@ let phrase = `Ich bin sehr lange gelaufen.`;
 
 const sepPunctuation = (str) => {
   let punctuation = str.match(/[^\w\s]/g);
-  console.log(punctuation)
   let alreadyCovered = [];
   for (let i of punctuation) {
   	console.log(str, i);
@@ -13,8 +12,6 @@ const sepPunctuation = (str) => {
     	if (i == ".") str = str.replace(new RegExp(/\./, 'g'), " " + i + " ");
       else  str = str.replace(new RegExp(i, 'g'), " " + i + " ");
     }
-    
-    console.log(str, i);
     alreadyCovered.push(i);
   }
   str = str.replace(/\s+/g, " ");
@@ -22,15 +19,15 @@ const sepPunctuation = (str) => {
   return str;
 }
 
-console.log(sepPunctuation(phrase));
+// console.log(sepPunctuation(phrase));
 
-const tokenize = (str) => {
+export const tokenize = (str) => {
 	let tokens = str.split(" ");
   return tokens;
 }
 
 
-const wordOrderEdits = (corSent, userSent) => {
+export const wordOrderEdits = (corSent, userSent) => {
   if (userSent == corSent) return "correct";
   else {
   	let corSentPrep = tokenize(sepPunctuation(corSent));
