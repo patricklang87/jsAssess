@@ -16,13 +16,23 @@ addQuestion("Henny / sich die Finger abschneiden / im Baumarkt", "Henny schneide
 addQuestion("Felix / sich den Rücken verletzen / beim Fegen", "Felix verletzt sich den Rücken beim Fegen.", 3)
 addQuestion("Paulina / sich das Bein verstauchen / als er einen Welpen tritt", "Paulina verstaucht sich das Bein, als er einen Welpen tritt.", 4);
 
-console.log(questionArray);
+//this should be changed so it reflects best practices in HTML
 let questionList = `<ol>`;
 for (let item of questionArray) {
-	console.log(item.question);
-    let questionText = `<li> ${item.question} <br> <input type="text" class="answerBox"> <br><br> </li>`;
+    let questionText = `<li><p>${item.question} (Points: ${item.maxPoints}) <br> <input type="text" class="answerBox"></p></li>`;
     questionList = questionList + questionText;
 }
-questionList = questionList +`</ol><button id="submit" onclick="scoreExercise">Check your work!</button>`;
+questionList = questionList +`</ol>`;
 document.getElementById("questions").innerHTML = questionList;
-console.log(questionList);
+
+const scoreExercise = () => {
+    let userAnswers = document.getElementsByClassName("answerBox");
+    let userAnsList = `<ol>`;
+    for (let answer of userAnswers) {
+    		console.log(answer.value);
+        let dispAnswer = `<li>${answer.value}</li>`;
+        userAnsList += dispAnswer;
+    }
+    userAnsList += `</ol>`;
+    document.getElementById("displayAnswers").innerHTML = userAnsList; 
+}
