@@ -9,7 +9,10 @@ import { levCalc as editSpelling } from './wordSpellingEditor.js';
 // textPrep.js
 
 const sepPunctuation = (str) => {
-    let punctuation = str.match(/[^\w\s]/g);
+    //may have to adjust punctuation. previous regex picked up umlauts: /[^/w/s]/g
+    let punctuation = str.match(/[,.":;()]/g);
+    console.log(punctuation);
+    if (punctuation != null) {
     let alreadyCovered = [];
     for (let i of punctuation) {
         console.log(str, i);
@@ -21,6 +24,7 @@ const sepPunctuation = (str) => {
     }
     str = str.replace(/\s+/g, " ");
     str = str.substr(0, str.length - 1);
+  }
     return str;
   }
   
@@ -29,6 +33,12 @@ const sepPunctuation = (str) => {
 const tokenize = (str) => {
       let tokens = str.split(" ");
     return tokens;
+  }
+
+  const prepSentence = (str) => {
+    let sepStr = sepPunctuation(str);
+    let tokenStr = tokenize(sepStr);
+    return tokenStr;
   }
   
   
@@ -53,7 +63,7 @@ const wordOrderEdits = (corSent, userSent) => {
   // wordOrderEditor.js 
 
 const sentCorrector = (phrase1, phrase2) => {
-    if (phrase1 == phrase2) return "correct";
+    if (phrase1 == phrase2) return 0;
     else {
       let editedPhrase = phrase2;
       let errorCount = 0;
@@ -93,8 +103,8 @@ const sentCorrector = (phrase1, phrase2) => {
           console.log(editedPhrase);
         }
       }
-      document.getElementById("words").innerHTML = editedPhrase;
-      return (errorCount);
+      //document.getElementById("words").innerHTML = editedPhrase;
+      return errorCount;
     }
   }
 
@@ -193,9 +203,15 @@ questionList = questionList +`</ol>`;
 document.getElementById("questions").innerHTML = questionList;
 
 const scoreExercise = () => {
+    let score = 0;
     console.log("begin score exercise");
     let userAnswers = document.getElementsByClassName("answerBox");
-    
+
+    console.log("user Answers: " + userAnswers[0].value);
+    console.log("user Answers: " + userAnswers[1].value);
+    console.log("user Answers: " + userAnswers[2].value);
+    console.log("User Answers length: " + userAnswers.length);
+
     // the following block simply check to make sure answers are available
     let userAnsList = `<ol>`;
     for (let answer of userAnswers) {
@@ -207,15 +223,29 @@ const scoreExercise = () => {
 
     // Here I begin to deal with the answers
 
-    for (let index in userAnswers) {
+    for (let index = 0; index < userAnswers.length; index++) {
         if (userAnswers[index].value == questionArray[index].answer)  {
             console.log(index + "; user answer: " + userAnswers[index].value + "; question Array: " + questionArray[index].answer + true);
+            console.log(questionArray[index].maxPoints);
+            score += questionArray[index].maxPoints;
         }
         else {
-            console.log(index + "; user answer: " + userAnswers[index] + "; question Array: " + questionArray[index].answer + false);
-        } 
+            //console.log(index + "; user answer: " + userAnswers[index] + "; question Array: " + questionArray[index].answer + false);
+            let pointsAwarded = 0;
+            let preppedUserAnswers = prepSentence(userAnswers[index].value);
+            let preppedQuestionAnswer = prepSentence(questionArray[index].answer);
+            console.log("token User Answer: " + preppedUserAnswers + "; token Correct Answer: " + preppedQuestionAnswer);
+            let errorCount = sentCorrector(preppedQuestionAnswer, preppedUserAnswers);
+            if (errorCount >= questionArray[index].maxPoints) pointsAwarded = 0;
+            else pointsAwarded = questionArray[index].maxPoints - errorCount;
+            console.log("errorCount: " + errorCount + "; points Awarded: " + pointsAwarded);
+            score += pointsAwarded;
+          } 
+      
+        
     }
-
+    console.log(score);
+    return score;
 }
 
 /*  Here I tried the check whether my import files work. They don't yet. 

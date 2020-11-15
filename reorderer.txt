@@ -1,9 +1,7 @@
-// @ts-check
-
 //reorderer -- this now just needs to be edited so it counts changes correctly
 
 let phrase1 = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-let phrase2 = [ 10, 8, 2,  9, 5, 3, 6, 1,  4, 7];
+let phrase2 = [ 10, 8, 2,  9, 5,3, 6, 1,  4, 7];
 
 
 const wordOrderEditor = (keyAns, userSub) => {

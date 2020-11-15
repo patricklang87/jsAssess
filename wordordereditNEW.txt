@@ -1,0 +1,96 @@
+/*
+checked:
+- extra entries at end
+- extra entries at beginning
+- extra distinct word in middle
+*/
+
+let phrase1 = ["ich", "bin", "der", "eine", "und", "beste", "König"];
+let phrase2 = ["beste", "ich",  "der", "eine", "und", "bin", "König"];
+
+const wordOrderEditor = (keyAns, userAns) => {
+  let editCount = 0;
+  let editedPhrase = userAns;
+
+  let KeyWordCount = {};
+
+  // an object to keep track of word frequency in the answer
+  for (let index = 0; index < keyAns.length; index++) {
+    if (!Object.keys(KeyWordCount).includes(keyAns[index])) KeyWordCount[keyAns[index]] = 1;
+    else KeyWordCount[keyAns[index]]++;
+  }
+  console.log("Key Ans Word Count: ", KeyWordCount);
+
+  // remove words not in answer. This is where you will build in spell check
+  for (let index = editedPhrase.length - 1; index >= 0; index -= 1) {
+    if (!keyAns.includes(editedPhrase[index])) {
+      editedPhrase.splice(index, 1);
+      console.log("word not in answer " + index, editedPhrase);
+      editCount++;
+    }
+  }
+
+  //remove extras of a single word
+  let EditedPhraseWordCount = {};
+  for (let index = 0; index < editedPhrase.length; index++) {
+    if (!Object.keys(EditedPhraseWordCount).includes(userAns[index])) EditedPhraseWordCount[userAns[index]] = 1;
+    else EditedPhraseWordCount[userAns[index]]++;
+  }
+  console.log("EditedPhrase Word Count: ", EditedPhraseWordCount);
+  /*
+  for (let index = 0; index < editedPhrase; index ++) {
+  		if (UserAnsWordCount[userAns[index]]
+  }  
+  */
+  console.log("edited Phrase: ", editedPhrase);
+  let rangeLength = 0;
+  if (editedPhrase.length > keyAns.length) rangeLength = userAns.length;
+  else rangeLength = keyAns.length;
+  for (let index = 0; index < rangeLength; index++) {
+    if (keyAns[index] != editedPhrase[index]) {
+
+      if (editedPhrase.slice(index).includes(keyAns[index])) {
+      
+      if (editedPhrase.slice(index + 1).includes(keyAns[index])) {
+          //if the word at the index is placed too early
+          editedPhrase.splice(keyAns.indexOf(editedPhrase[index]) + 1, 0, editedPhrase[index]);
+          editedPhrase.splice(index, 1);
+          console.log("word too early", index, editedPhrase);
+          editCount++;
+          
+        } else if (!editedPhrase.slice(index + 1).includes(keyAns[index])) {
+          //if word is placed too late
+          let editedPhraseP1 = editedPhrase.slice(0, index);
+          let editedPhraseP2 = editedPhrase.slice(index);
+
+          editedPhraseP2.splice(editedPhraseP2.indexOf(keyAns[index]), 1);
+          editedPhrase = editedPhraseP1.concat(editedPhraseP2);
+          //insert the correct word at the correct index
+          editedPhrase.splice(index, 0, keyAns[index]);
+          console.log("a word is too late" + index + editedPhrase);
+          editCount++;
+          }
+
+
+
+      } else if (!editedPhrase.slice(index).includes(keyAns[index]) && keyAns[index] != undefined) {
+        // word missing (including final word)
+        editedPhrase.splice(index, 0, keyAns[index]);
+        console.log("a word is missing" + index, editedPhrase);
+        editCount++;
+
+      } else if (editedPhrase[index + 1] == keyAns[index]) {
+        //one extra word (including final word -- but if more than one eextra, the code never ends)
+        editedPhrase.splice(index, 1);
+        console.log("one extra word" + index, editedPhrase);
+        editCount++;
+
+      }
+
+    }
+  }
+  console.log(editedPhrase);
+  return editCount;
+}
+
+console.log(wordOrderEditor(phrase1, phrase2));

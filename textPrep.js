@@ -26,6 +26,11 @@ export const tokenize = (str) => {
   return tokens;
 }
 
+export const prepSentence = (str) => {
+  let sepStr = sepPunctuation(str);
+  let tokenStr = tokenize(sepStr);
+  return tokenStr;
+}
 
 export const wordOrderEdits = (corSent, userSent) => {
   if (userSent == corSent) return "correct";
